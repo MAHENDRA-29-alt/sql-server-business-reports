@@ -1,32 +1,26 @@
--- Tables for Sales Reporting Project
+-- Sample data for Sales Reporting Project
 
-CREATE TABLE Customers (
-    CustomerID INT PRIMARY KEY,
-    CustomerName VARCHAR(100),
-    City VARCHAR(50)
-);
+INSERT INTO Customers VALUES
+(1, 'Ravi Kumar', 'Hyderabad'),
+(2, 'Anita Sharma', 'Bangalore'),
+(3, 'John Paul', 'Chennai');
 
-CREATE TABLE Products (
-    ProductID INT PRIMARY KEY,
-    ProductName VARCHAR(100),
-    Price DECIMAL(10,2)
-);
+INSERT INTO Products VALUES
+(1, 'Laptop', 55000),
+(2, 'Mouse', 500),
+(3, 'Keyboard', 1500);
 
-CREATE TABLE Orders (
-    OrderID INT PRIMARY KEY,
-    CustomerID INT,
-    OrderDate DATE,
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
-);
+INSERT INTO Orders VALUES
+(101, 1, '2024-01-10'),
+(102, 2, '2024-01-15'),
+(103, 1, '2024-02-05');
 
-CREATE TABLE OrderDetails (
-    OrderDetailID INT PRIMARY KEY,
-    OrderID INT,
-    ProductID INT,
-    Quantity INT,
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+INSERT INTO OrderDetails VALUES
+(1, 101, 1, 1),
+(2, 101, 2, 2),
+(3, 102, 3, 1),
+(4, 103, 2, 3);
+
 
 
 
