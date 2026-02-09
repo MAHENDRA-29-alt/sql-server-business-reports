@@ -1,51 +1,29 @@
-# Project: SQL Server Sales Reporting
+-- Queries for Sales Reporting Project
 
-## Problem
-The business needed monthly sales and customer performance reports to track revenue and identify top-performing products and customers. Manual tracking was time-consuming and prone to errors.
+-- 1. Monthly Sales Report
+SELECT 
+    FORMAT(O.OrderDate, 'yyyy-MM') AS Month,
+    SUM(P.Price * OD.Quantity) AS TotalSales
+FROM Orders O
+JOIN OrderDetails OD ON O.OrderID = OD.OrderID
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY FORMAT(O.OrderDate, 'yyyy-MM');
 
-## Solution
-I designed a SQL Server database with the following tables:
-- **Customers**: Customer details
-- **Products**: Product details
-- **Orders**: Order information
-- **OrderDetails**: Product quantities per order
+-- 2. Top Customers by Sales
+SELECT 
+    C.CustomerName,
+    SUM(P.Price * OD.Quantity) AS TotalSpent
+FROM Customers C
+JOIN Orders O ON C.CustomerID = O.CustomerID
+JOIN OrderDetails OD ON O.OrderID = OD.OrderID
+JOIN Products P ON OD.ProductID = P.ProductID
+GROUP BY C.CustomerName
+ORDER BY TotalSpent DESC;
 
-Using SQL queries, I:
-- Joined multiple tables to fetch combined data
-- Used `GROUP BY` and aggregation functions for monthly sales and total spending
-- Implemented reporting queries to identify top customers and product performance
-
-## Sample Output
-
-**Monthly Sales Report**
-| Month    | TotalSales |
-|----------|------------|
-| 2024-01  | 56000      |
-| 2024-02  | 1500       |
-
-**Top Customers by Sales**
-| Customer Name | TotalSpent |
-|---------------|------------|
-| Ravi Kumar    | 56500      |
-| Anita Sharma  | 1500       |
-| John Paul     | 0          |
-
-**Product Performance**
-| Product Name | TotalQuantitySold |
-|--------------|-----------------|
-| Laptop       | 1               |
-| Mouse        | 5               |
-| Keyboard     | 1               |
-
-## Skills Used
-- SQL Server
-- Joins (INNER, LEFT)
-- Aggregations (SUM, COUNT)
-- Group By & Subqueries
-- Reporting & Data Analysis
-
-## Optional Notes
-- Queries are included in the `queries.sql` file.
-- Tables creation and sample data are included in `tables.sql` and `insert-data.sql`.
-- Designed for clarity, maintainability, and easy extension for additional reporting needs.
-
+-- 3. Product Performance
+SELECT 
+    P.ProductName,
+    SUM(OD.Quantity) AS TotalQuantitySold
+FROM Products P
+JOIN OrderDetails OD ON P.ProductID = OD.ProductID
+GROUP BY P.ProductName;
